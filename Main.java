@@ -5,6 +5,10 @@
 * ASSIGNMENT: Program 5 - Stacks
 * DESCRIPTION: This program demonstrates the Stacks Data Structure by implementing it's core methods and applying them to test different applications:
 * Palindrone, Postfix Evaluator, Prefix Evaluator, Balanced Parenthesis, Decimal to Binary, and Undo/Redo Command Processor.
+* MEMBERS WORK:
+*   Derimar Gray: Stack class, Decima to Binary & Undo/Redo Command Processor.
+*   Ethan Lopez: Prefix Evaluator & Balanced Parenthesis.
+*   Rusell Adams: Palindrome & Postfix Evaluator.
 */
 import java.io.IOException;
 import java.io.PrintWriter;

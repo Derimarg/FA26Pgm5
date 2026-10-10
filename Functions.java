@@ -32,9 +32,6 @@ public class Functions {
                 "bubba", "a", "mom", "abba", "abccba", "abcba"));
 
         String msg = "";
-        System.out.println(msg);
-        out.println(msg);
-        out.println();
 
         boolean palindrome = false;
 
@@ -70,7 +67,7 @@ public class Functions {
                 palindrome = false;
             }
         }
-
+        out.println();
     }
 
     /*
@@ -108,7 +105,7 @@ public class Functions {
         int left, right;
 
         for (String token : tokens) {
-            if (token.matches("-?\\d+")) {
+            if (token.matches("-?\\d+") || isDigits(token)) {
                 stack.push((Integer) Integer.parseInt(token));
             } else {
                 try {
@@ -119,6 +116,9 @@ public class Functions {
                     left = stack.pop();
                     switch (token) {
                         case "/":
+                            if (right == 0) {
+                                throw new ArithmeticException("Division by zero");
+                            }
                             stack.push(left / right);
                             break;
                         case "*":
@@ -134,12 +134,12 @@ public class Functions {
                             throw new IllegalArgumentException("Invalid operator: " + token);
                     }
                 } catch (Exception e) {
-                    return String.format("The result of the postfix expression: %s is invalid", expression);
+                    return String.format("The expression: %s is invalid.", expression);
                 }
             }
         }
         if (stack.size() != 1) {
-            return String.format("The result of the postfix expression: %s is invalid", expression);
+            return String.format("The expression: %s is invalid.", expression);
         }
         return String.format("The result of the postfix expression: %s = %d", expression, stack.pop());
     }
@@ -208,7 +208,7 @@ public class Functions {
 
             // Check if the token is a number
             // Also checks for negitive numbers
-            if (token.matches("-?\\d+")) {
+            if (token.matches("-?\\d+") || isDigits(token)) {
                 stack.push(Integer.valueOf(token));
             } else {
                 // Ensure there are at least two operands available

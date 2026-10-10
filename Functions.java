@@ -72,6 +72,10 @@ public class Functions {
 
     }
 
+    /*PRE: Receives a PrintWriter 'out'.
+     *POST: Prints the mathematical result of the expression
+     *      or an invalid message to the screen and output file
+     */
     public static void testPostFixExpression(PrintWriter out) {
         System.out.println("\nSTACK 2: POSTFIX EVALUATOR");
         out.println("\nSTACK 2: POSTFIX EVALUATOR");
@@ -92,6 +96,10 @@ public class Functions {
     }
 
 
+    /*PRE: Receives a String 'expression'
+     *POST: Returns the mathematical result of the expression
+     *      or an invalid message
+    */
     public static String evaluatePostfix(String expression){
         MyStack<Integer> stack = new MyStack<Integer>();
         String[] tokens = expression.split(" ");

@@ -15,6 +15,12 @@ public class Functions {
         return true;
     }
 
+    /*PRE: Receives a PrintWriter 'out
+     *POST: Pushes each word onto the stack, then pops off
+     *      each word comparing it letter by letter to itself.
+     *      Prints whether or not each word is a plaindrome to the
+     *      screen and output file
+    */
     public static void testPalindrome(PrintWriter out) {
         System.out.println("\nSTACK 1: PALINDROME");
         out.println("\nSTACK 1: PALINDROME");
@@ -28,8 +34,48 @@ public class Functions {
         System.out.println(msg);
         out.println(msg);
         out.println();
+
+        boolean palindrome = false;
+
+        //Loop through wordList
+        for (String word: wordList){
+            //Put each word onto the stack
+            for (int i = 0; i < word.length(); i++){
+                stack.push((Character)word.charAt(i));
+            }
+            //Pop letter off the stack factualizing if the word
+            //is a plaindrome or not.
+            for (int i = 0; i < word.length(); i++){
+                //If any letters mismatch, the word is not a palindrome
+                if (!((Character)word.charAt(i)).equals(stack.pop())){
+                    //Print the result to the screena and output file
+                    msg = String.format("%-8s is a palindrome: false",word);
+                    System.out.println(msg);
+                    out.println(msg);
+                    break;
+                }
+                //If all character have matched, the word is a palindrome
+                //assign palindrome = true
+                if (i == word.length() - 1){
+                    palindrome = true;
+                }
+            }
+            if (palindrome){
+                //If the word is a palindrome, print the result to 
+                //the screen and output file
+                msg = String.format("%-8s is a palindrome: true",word);
+                System.out.println(msg);
+                out.println(msg);
+                palindrome = false;
+            }
+        }
+
     }
 
+    /*PRE: Receives a PrintWriter 'out'.
+     *POST: Prints the mathematical result of the expression
+     *      or an invalid message to the screen and output file
+     */
     public static void testPostFixExpression(PrintWriter out) {
         System.out.println("\nSTACK 2: POSTFIX EVALUATOR");
         out.println("\nSTACK 2: POSTFIX EVALUATOR");
@@ -41,8 +87,64 @@ public class Functions {
                 "3 5 7 + *",
                 "3 5 6"));
 
+        for (String line: expList){
+            String result = evaluatePostfix(line);
+            System.out.println(result);
+            out.println(result);
+        }
         out.println();
     }
+
+
+    /*PRE: Receives a String 'expression'
+     *POST: Returns the mathematical result of the expression
+     *      or an invalid message
+    */
+    public static String evaluatePostfix(String expression){
+        MyStack<Integer> stack = new MyStack<Integer>();
+        String[] tokens = expression.split(" ");
+        int left,right;
+        
+        for (String token: tokens){
+            if (token.matches("-?\\d+")){
+                stack.push((Integer)Integer.parseInt(token));
+            }
+            else {
+                try{
+                    if (stack.size() < 2) {
+                    throw new IllegalStateException("Operators require two numbers");
+                    }
+                    right = stack.pop();
+                    left = stack.pop();
+                    switch(token){
+                        case "/":
+                            stack.push(left / right);
+                            break;
+                        case "*":
+                            stack.push(left * right);
+                            break;
+                        case "+":
+                            stack.push(left + right);
+                            break;
+                        case "-":
+                            stack.push(left - right);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Invalid operator: " + token);
+                    }
+                }
+                catch (Exception e){
+                    return String.format("The result of the postfix expression: %s is invalid",expression);
+                }
+            }
+        }
+        if (stack.size() != 1) {
+            return String.format("The result of the postfix expression: %s is invalid",expression);
+        }
+        return String.format("The result of the postfix expression: %s = %d",expression,stack.pop());
+    }
+
+
     /**
      * PRE: PrintWriter out is initialized and ready to write.
      * POST: Evaluates each prefix expression and prints

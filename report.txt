@@ -1,15 +1,12 @@
 
 STACK 1: PALINDROME
-[t, a, c, o, c, a, t]
 
 
 
 STACK 2: POSTFIX EVALUATOR
 
 
-
 STACK 3: PREFIX EVALUATOR
-
 
 
 STACK 4: DECIMAL TO BINARY EVALUATOR
@@ -22,7 +19,19 @@ The decimal value 0 is 0 in binary
 The decimal value 0 is 1 in binary
 
 
-
 STACK 6: UNDO REDO FUNCTION EVALUATOR
-
-
+performing: add a
+performing: add b
+performing: add c
+redo: stack is empty
+undoing: command: add c
+undoing: command: add b
+redoing: command: add b
+undoing: command: add b
+performing: add d
+undoing: command: add d
+undoing: command: add a
+undo: stack is empty
+redoing: command: add a
+invalid command entered: F
+program ending

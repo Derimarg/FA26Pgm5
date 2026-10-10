@@ -24,17 +24,10 @@ public class Functions {
         ArrayList<String> wordList = new ArrayList<>(Arrays.asList("tacocat",
                 "bubba", "a", "mom", "abba", "abccba", "abcba"));
 
-        // REMOVE: testing stack
-        stack.push('t');
-        stack.push('a');
-        stack.push('c');
-        stack.push('o');
-        stack.push('c');
-        stack.push('a');
-        stack.push('t');
-        System.out.println(stack.stackString());
-        out.println(stack.stackString());
-        out.println("\n");
+        String msg = "";
+        System.out.println(msg);
+        out.println(msg);
+        out.println();
     }
 
     public static void testPostFixExpression(PrintWriter out) {
@@ -48,7 +41,7 @@ public class Functions {
                 "3 5 7 + *",
                 "3 5 6"));
 
-        out.println("\n");
+        out.println();
     }
 
     public static void testPreFixExpression(PrintWriter out) {
@@ -65,9 +58,14 @@ public class Functions {
                 "* + 7 5 3",
                 "6 5 3"));
 
-        out.println("\n");
+        out.println();
     }
 
+    /**
+     * PRE: Accepts a valid PrintWriter object for file output
+     * POST: Converts a list of decimal numbers to their binary representation using
+     * a stack and writing the ouputs to the report file
+     */
     public static void testDecToBinary(PrintWriter out) {
         System.out.println("\nSTACK 4: DECIMAL TO BINARY EVALUATOR");
         out.println("\nSTACK 4: DECIMAL TO BINARY EVALUATOR");
@@ -100,7 +98,7 @@ public class Functions {
             System.out.println(result);
             out.println(result);
         }
-        out.println("\n");
+        out.println();
     }
 
     public static void testIsBalanced(PrintWriter out) {
@@ -115,9 +113,14 @@ public class Functions {
                 "{(1 + [2 * 3]) - 4}",
                 "([x + y] + z}"));
 
-        out.println("\n");
+        out.println();
     }
 
+    /*
+     * PRE: Accepts a valid PrintWriter object for file output
+     * POST: Does a set of operations base on a list of commands utilizing undo/redo
+     * stacks
+     */
     public static void testUndoRedo(PrintWriter out) {
         System.out.println("\nSTACK 6: UNDO REDO FUNCTION EVALUATOR");
         out.println("\nSTACK 6: UNDO REDO FUNCTION EVALUATOR");
@@ -125,7 +128,76 @@ public class Functions {
         ArrayList<String> expList = new ArrayList<>(Arrays.asList(
                 "D add a", "D add b", "D add c", "R", "U", "U", "R", "U", "D add d", "U", "U", "U", "R", "F", "Q"));
 
-        out.println("\n");
+        MyStack<String> undoStack = new MyStack<>();
+        MyStack<String> redoStack = new MyStack<>();
+
+        for (String line : expList) {
+
+            String trimmed = line.trim();
+            if (trimmed.isEmpty()) {
+                continue;
+            }
+
+            // Split into [command, element]
+            String[] parts = trimmed.split("\\s+", 2);
+            String command = parts[0].toUpperCase();
+
+            switch (command) {
+                case "D" -> { // Add element
+                    String item = (parts.length > 1) ? parts[1] : "";
+                    undoStack.push(item);
+                    // Clear history on new action
+                    redoStack.clear();
+
+                    String msg = "performing: " + item;
+                    System.out.println(msg);
+                    out.println(msg);
+                }
+                case "R" -> { // Redo action
+                    if (redoStack.isEmpty()) {
+                        String msg = "redo: stack is empty";
+                        System.out.println(msg);
+                        out.println(msg);
+
+                    } else {
+                        String redoneItem = redoStack.pop();
+                        undoStack.push(redoneItem); // Move back to active stack
+
+                        String msg = "redoing: command: " + redoneItem;
+                        System.out.println(msg);
+                        out.println(msg);
+                    }
+                }
+                case "U" -> { // Undo action
+                    if (undoStack.isEmpty()) {
+                        String msg = "undo: stack is empty";
+                        System.out.println(msg);
+                        out.println(msg);
+                    } else {
+                        String undoneItem = undoStack.pop();
+                        redoStack.push(undoneItem); // Move to redo stack
+
+                        String msg = "undoing: command: " + undoneItem;
+                        System.out.println(msg);
+                        out.println(msg);
+                    }
+                }
+                case "Q" -> { // Terminate actions
+                    String msg = "program ending";
+                    System.out.println(msg);
+                    out.println(msg);
+                    return;
+                }
+                default -> {
+                    String msg = "invalid command entered: " + command;
+                    System.out.println(msg);
+                    out.println(msg);
+                }
+
+            }
+        }
+
+        out.println();
     }
 
 }

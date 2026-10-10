@@ -6,8 +6,8 @@
 * DESCRIPTION: This program demonstrates the Stacks Data Structure by implementing it's core methods and applying them to test different applications:
 * Palindrone, Postfix Evaluator, Prefix Evaluator, Balanced Parenthesis, Decimal to Binary, and Undo/Redo Command Processor.
 */
-import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Main {
 
@@ -19,7 +19,7 @@ public class Main {
             Functions.testPostFixExpression(out);
             Functions.testPreFixExpression(out);
             Functions.testDecToBinary(out);
-            // Functions.testIsBalanced(out);
+            Functions.testIsBalanced(out);
             Functions.testUndoRedo(out);
             out.close();
         } catch (IOException e) {

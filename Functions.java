@@ -1,7 +1,7 @@
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.io.PrintWriter;
 
 public class Functions {
 
@@ -43,11 +43,18 @@ public class Functions {
 
         out.println();
     }
-
+    /**
+     * PRE: PrintWriter out is initialized and ready to write.
+     * POST: Evaluates each prefix expression and prints
+     *       the results or error messages to the console
+     *       and output file
+     * 
+     */
     public static void testPreFixExpression(PrintWriter out) {
         System.out.println("\nSTACK 3: PREFIX EVALUATOR");
         out.println("\nSTACK 3: PREFIX EVALUATOR");
 
+        // Initialize prefix expressions to test
         ArrayList<String> expList = new ArrayList<>(Arrays.asList(
                 "+ * 7 5 + 6 7",
                 "- + 7 * 4 5 + 2 0",
@@ -58,8 +65,97 @@ public class Functions {
                 "* + 7 5 3",
                 "6 5 3"));
 
+        // Evaluate each prefix expression
+        for (String exp : expList) {
+            String output;
+
+            try {
+                int result = evaluatePrefix(exp);
+
+                //Formate the result for valid expressions
+                output = "The result of the prefix expression: " + exp + " = " + result;
+
+            } catch (IllegalArgumentException | ArithmeticException e) {
+
+                //Handles invalid expressions
+                output = "The expression: " + exp + " is invalid.";
+            }
+
+            // Print final results to console and output file
+            System.out.println(output);
+            out.println(output);
+        }
+
         out.println();
     }
+
+    /**
+     * PRE: expression is a non-null prefix expression
+     * POST: Returns the evaluated result of the valid expression
+     *       Invalid expressions must be handled.
+     * 
+     */
+    public static int evaluatePrefix(String expression) {
+        MyStack<Integer> stack = new MyStack<>();
+
+        String[] tokens = expression.trim().split("\\s+");
+
+        //Traverse the tokens from right to left
+        for (int i = tokens.length - 1; i >= 0; i--) {
+            
+            String token = tokens[i];
+
+            // Check if the token is a number
+            // Also checks for negitive numbers
+            if (token.matches("-?\\d+")) {
+                stack.push(Integer.valueOf(token));
+            }
+            else{
+                // Ensure there are at least two operands available
+                if (stack.size() < 2) {
+                    throw new IllegalArgumentException("Invalid prefix expression");
+                }
+
+                // Pop the two operands
+                int left = stack.pop();
+                int right = stack.pop();
+
+                // Perform the arithmetic operation
+                int result;
+
+                switch(token) {
+                    case "+":
+                        result = left + right;
+                        break;
+                    case "-":
+                        result = left - right;
+                        break;
+                    case "*":
+                        result = left * right;
+                        break;
+                    case "/":
+                        if (right == 0) {
+                            throw new ArithmeticException("Division by zero");
+                        }
+                        result = left / right;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid operator: " + token);
+                }
+
+                stack.push(result);
+            }
+        }
+
+        // A valid prefix expression must leave exactly one value
+        if (stack.size() != 1) {
+            throw new IllegalArgumentException("Invalid prefix expression");
+        }
+
+        // return final evaluated result
+        return stack.pop();
+    }
+
 
     /**
      * PRE: Accepts a valid PrintWriter object for file output
@@ -101,10 +197,18 @@ public class Functions {
         out.println();
     }
 
+    /**
+     * PRE: PrintWriter out is initialized and ready to write.
+     * POST: Tests each expression for tha balanced brackets and
+     *       prints the results to the console and output file
+     * 
+     */
+
     public static void testIsBalanced(PrintWriter out) {
         System.out.println("\nSTACK 5: PARENTHESIS IS BALANCED EVALUATOR");
         out.println("\nSTACK 5: PARENTHESIS IS BALANCED EVALUATOR");
-
+        
+        // Initialize expressions to test for balanced brackets
         ArrayList<String> expList = new ArrayList<>(Arrays.asList(
                 "[7 + (4 - 3)] - (3 * 4)",
                 "[7 + (4 - 3] - (3 * 4)",
@@ -112,9 +216,62 @@ public class Functions {
                 "([x + y] + {z * w})",
                 "{(1 + [2 * 3]) - 4}",
                 "([x + y] + z}"));
+        
+        // Evaluate each expression using the stack based algo
+        for (String exp : expList) {
+            boolean result = isBalanced(exp);
+
+            //Format for the print results to console and output file
+            String output = "The expression " + exp + (result ? " is balanced" : " is not balanced"); 
+
+            System.out.println(output);
+            out.println(output);
+        }
 
         out.println();
     }
+
+    /*
+     * PRE: The expression is a non-null String
+     * POST: Returns true if all brackets are correctly
+     *       matched, false otherwise
+     */
+    public static boolean isBalanced(String expression) {
+        MyStack<Character> stack = new MyStack<>();
+
+        // Traverse each character in the expression
+        for(int i = 0; i < expression.length(); i++) {
+            char current = expression.charAt(i);
+
+            // Push opening brackets onto the stack, pop and check for matching closing brackets
+            if(current == '(' || current == '[' || current == '{') {
+                stack.push(current);
+            }
+            else if(current == ')' || current == ']' || current == '}') {
+
+                // A closing bracket without an opening bracket is invalid
+                if (stack.isEmpty()) {
+                    return false; 
+                }
+                
+                // Remove the most recent opening bracket
+                char top = stack.pop();
+
+                // Check if the opening and closing brackets match
+                if ((current == ')' && top != '(') ||
+                    (current == ']' && top != '[') ||
+                    (current == '}' && top != '{')) {
+                    return false;
+                }
+
+            }
+        }
+        // Any remaining opening brackets mean the expression is unbalanced
+        return stack.isEmpty();
+    }
+
+
+
 
     /*
      * PRE: Accepts a valid PrintWriter object for file output

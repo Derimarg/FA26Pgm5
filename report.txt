@@ -7,6 +7,14 @@ STACK 2: POSTFIX EVALUATOR
 
 
 STACK 3: PREFIX EVALUATOR
+The result of the prefix expression: + * 7 5 + 6 7 = 48
+The result of the prefix expression: - + 7 * 4 5 + 2 0 = 25
+The result of the prefix expression: - / 18 / 6 3 2 = 7
+The result of the prefix expression: * 25 + 15 * 7 5 = 1250
+The result of the prefix expression: + 4 / 0 5 = 4
+The result of the prefix expression: + 15 / 3 * 2 15 = 15
+The result of the prefix expression: * + 7 5 3 = 36
+The expression: 6 5 3 is invalid.
 
 
 STACK 4: DECIMAL TO BINARY EVALUATOR
@@ -17,6 +25,15 @@ The decimal value 0 is 11111111 in binary
 The decimal value 0 is 100000000 in binary
 The decimal value 0 is 0 in binary
 The decimal value 0 is 1 in binary
+
+
+STACK 5: PARENTHESIS IS BALANCED EVALUATOR
+The expression [7 + (4 - 3)] - (3 * 4) is balanced
+The expression [7 + (4 - 3] - (3 * 4) is not balanced
+The expression 4 + 6 - 7 is balanced
+The expression ([x + y] + {z * w}) is balanced
+The expression {(1 + [2 * 3]) - 4} is balanced
+The expression ([x + y] + z} is not balanced
 
 
 STACK 6: UNDO REDO FUNCTION EVALUATOR

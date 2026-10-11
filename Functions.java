@@ -26,17 +26,15 @@ public class Functions {
         System.out.println("\nSTACK 1: PALINDROME");
         out.println("\nSTACK 1: PALINDROME");
 
-        MyStack<Character> stack = new MyStack<>();
-
         ArrayList<String> wordList = new ArrayList<>(Arrays.asList("tacocat",
                 "bubba", "a", "mom", "abba", "abccba", "abcba"));
 
         String msg = "";
 
-        boolean palindrome = false;
-
         // Loop through wordList
         for (String word : wordList) {
+            MyStack<Character> stack = new MyStack<>();
+            boolean palindrome = true;
             // Put each word onto the stack
             for (int i = 0; i < word.length(); i++) {
                 stack.push((Character) word.charAt(i));
@@ -46,26 +44,15 @@ public class Functions {
             for (int i = 0; i < word.length(); i++) {
                 // If any letters mismatch, the word is not a palindrome
                 if (!((Character) word.charAt(i)).equals(stack.pop())) {
-                    // Print the result to the screena and output file
-                    msg = String.format("%-8s is a palindrome: false", word);
-                    System.out.println(msg);
-                    out.println(msg);
+                    //Print the result to the screena and output file
+                    palindrome = false;
                     break;
                 }
-                // If all character have matched, the word is a palindrome
-                // assign palindrome = true
-                if (i == word.length() - 1) {
-                    palindrome = true;
-                }
             }
-            if (palindrome) {
-                // If the word is a palindrome, print the result to
-                // the screen and output file
-                msg = String.format("%-8s is a palindrome: true", word);
-                System.out.println(msg);
-                out.println(msg);
-                palindrome = false;
-            }
+            //Print the result to the screen and output file
+            msg = String.format("%-8s is a palindrome: %s", word,palindrome);
+            System.out.println(msg);
+            out.println(msg);
         }
         out.println();
     }
